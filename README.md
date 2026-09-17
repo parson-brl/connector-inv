@@ -111,6 +111,7 @@ quasar dev --host 0.0.0.0 --port 8080
 - Crie a estrutura do Cordova
 
 ```bash
+npm install -g cordova@10.0.0 --unsafe-perm # Executar essa linha apenas se o diretorio src-cordova nao existir
 quasar mode --add cordova
 ```
 
