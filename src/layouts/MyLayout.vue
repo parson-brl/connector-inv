@@ -18,7 +18,7 @@
 
         <q-toolbar-title>
           Inventário
-          <div slot="subtitle">v 1.0.6</div>
+          <div slot="subtitle">v 1.0.7</div>
         </q-toolbar-title>
       </q-toolbar>
     </q-layout-header>
