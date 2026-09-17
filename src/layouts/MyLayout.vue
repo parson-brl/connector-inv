@@ -133,7 +133,7 @@ export default {
         self.$q.notify({message: 'Nenhum dado a ser enviado.', color: 'warning'})
       } else {
         // self.$axios.post('http://localhost:1880/connector/v1/inventory/export/', this.items)
-        self.$axios.post('http://192.168.0.63:1880/connector/v1/inventory/export/', this.items)
+        self.$axios.post('http://172.18.4.21:1880/connector/v1/inventory/export/', this.items)
           .then(function (response) {
             console.log(response)
             if (response.data.length === 0) {
