@@ -6,7 +6,7 @@ Aplicativo Android desenvolvido usando o Quasar framework (ou Quasar.js), um fra
   <tr>
     <td align="center" width="25%" valign="top">
       <h3>Principal</h3>
-      <img src="./screenshots/screen-01.jpeg" style="max-height: 450px; width: auto;" alt="Tela Principal"/>
+      <img src="./screenshots/screen-01.jpeg" style="max-height: 300px; width: 200px;" alt="Tela Principal"/>
     </td>
   </tr>
 </table>
@@ -143,27 +143,19 @@ export PATH=$JAVA_HOME/bin:$PATH
 java -version
 ```
 
-- Compile o app com o comando quasar
+- Sempre que alterar o código-fonte compile o app com o comando quasar:
 
 ```bash
 quasar build -m cordova -T android --debug
 ```
 
-- Ou, se quiser gerar o APK diretamente com o Cordova
-
-```bash
-cd src-cordova
-cordova build android
-cd ..
-```
-
-- Instale o editor nano dentro do Docker para poder editar os arquivos abaixo
+- Instale o editor nano dentro do Docker para poder editar os arquivos abaixo:
 
 ```bash
 apt-get update && apt-get install -y nano
 ```
 
-- Abra o seguinte arquivo pelo terminal
+- Abra o seguinte arquivo pelo terminal:
 
 ```bash
 nano /app/src-cordova/platforms/android/repositories.gradle
@@ -222,7 +214,7 @@ gradle.projectsLoaded {
 EOF
 ```
 
-- Force o Gradle a limpar o Cache e Recompilar
+- Force o Gradle a limpar o Cache e Recompilar:
 
 ```bash
 cd src-cordova
@@ -230,7 +222,7 @@ cordova build android --debug -- --no-daemon --refresh-dependencies
 cd ..
 ```
 
-- Substitua fisicamente todas as ocorrências de JCenter por MavenCentral:
+- Substitua fisicamente todas as ocorrências de JCenter por MavenCentral
 - Executa a substituição nos arquivos gradle da plataforma
 
 ```bash
@@ -238,13 +230,13 @@ find /app/src-cordova/platforms/android/ -type f \( -name "*.gradle" -o -name "*
 find /app/src-cordova/platforms/android/ -type f \( -name "*.gradle" -o -name "*.properties" \) -exec sed -i 's|https://jcenter.bintray.com/|https://maven.org|g' {} +
 ```
 
-- Remova o script temporário para não dar conflito
+- Remova o script temporário para não dar conflito:
 
 ```bash
 rm -f /root/.gradle/init.gradle
 ```
 
-- Remove pastas de cache locais do compilador
+- Remove pastas de cache locais do compilador:
 
 ```bash
 rm -rf /app/src-cordova/platforms/android/.gradle
@@ -252,7 +244,7 @@ rm -rf /app/src-cordova/platforms/android/app/build
 rm -rf /root/.gradle/caches
 ```
 
-- Execute o build
+- Execute o build:
 
 ```bash
 cd src-cordova
@@ -260,7 +252,7 @@ cordova build android --debug -- --no-daemon
 cd ..
 ```
 
-- Abra o arquivo de configuração interna do Cordova
+- Abra o arquivo de configuração interna do Cordova:
 
 ```bash
 nano /app/src-cordova/platforms/android/CordovaLib/cordova.gradle
@@ -270,7 +262,7 @@ nano /app/src-cordova/platforms/android/CordovaLib/cordova.gradle
 - substitua a linha classpath 'com.g00fy2:versioncompare:1.3.4@jar' por classpath 'io.github.g00fy2:versioncompare:1.5.0'
 - No editor do nano: Ctrl + O, Depois Enter (para salvar) , Depois Ctrl + X (para sair)
 
-- Abra o arquivo de build do CordovaLib
+- Abra o arquivo de build do CordovaLib:
 
 ```bash
 nano /app/src-cordova/platforms/android/CordovaLib/build.gradle
@@ -279,7 +271,7 @@ nano /app/src-cordova/platforms/android/CordovaLib/build.gradle
 - Comente ou delete as linhas do Bintray (linha 40 classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3' - linha 51 apply plugin: 'com.jfrog.bintray' - bloco da linha 129 a 150 bintray {....} )
 - Salva e saia do editor: aperte Ctrl + O, depois Enter e Ctrl + X
 
-- Remove pastas de cache locais do compilador
+- Remove pastas de cache locais do compilador:
 
 ```bash
 rm -rf /app/src-cordova/platforms/android/.gradle
@@ -287,7 +279,7 @@ rm -rf /app/src-cordova/platforms/android/app/build
 rm -rf /root/.gradle/caches
 ```
 
-- Execute o build
+- Execute o build:
 
 ```bash
 cd src-cordova
@@ -295,31 +287,31 @@ cordova build android --debug -- --no-daemon
 cd ..
 ```
 
-- Aponta temporariamente para o Java 17 nativo da imagem
+- Aponta temporariamente para o Java 17 nativo da imagem:
 
 ```bash
 update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
 ```
 
-- Executa o aceitador de licenças (agora vai funcionar direto)
+- Executa o aceitador de licenças (agora vai funcionar direto):
 
 ```bash
 yes | JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 sdkmanager --licenses
 ```
 
-- Retorna para o Java 8 exigido pelo seu Gradle de 2018
+- Retorna para o Java 8 exigido pelo seu Gradle de 2018:
 
 ```bash
 update-alternatives --set java /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
 ```
 
-- Cria o arquivo simulador do 'dx' apontando para o novo compilador 'd8'
+- Cria o arquivo simulador do 'dx' apontando para o novo compilador 'd8':
 
 ```bash
 ln -s /opt/android/build-tools/36.0.0/d8 /opt/android/build-tools/36.0.0/dx
 ```
 
-- Remove pastas de cache locais do compilador
+- Remove pastas de cache locais do compilador:
 
 ```bash
 rm -rf /app/src-cordova/platforms/android/.gradle
@@ -327,7 +319,7 @@ rm -rf /app/src-cordova/platforms/android/app/build
 rm -rf /root/.gradle/caches
 ```
 
-- Execute o build
+- Execute o build:
 
 ```bash
 cd src-cordova
@@ -335,27 +327,27 @@ cordova build android --debug -- --no-daemon
 cd ..
 ```
 
-- Apaga a pasta da versão incompatível do Android Build Tools
+- Apaga a pasta da versão incompatível do Android Build Tools:
 
 ```bash
 rm -rf /opt/android/build-tools/36.0.0
 rm -rf /opt/android/build-tools/34.0.0
 ```
 
-- Baixa as ferramentas de compilação da versão 29
+- Baixa as ferramentas de compilação da versão 29:
 
 ```bash
 JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 sdkmanager "build-tools;29.0.2" "platforms;android-29"
 ```
 
-- Garante que o arquivo de propriedades use estritamente a API 29
+- Garante que o arquivo de propriedades use estritamente a API 29:
 
 ```bash
 sed -i 's/cdvCompileSdkVersion=.*/cdvCompileSdkVersion=29/g' /app/src-cordova/platforms/android/project.properties
 sed -i 's/cdvBuildToolsVersion=.*/cdvBuildToolsVersion=29.0.2/g' /app/src-cordova/platforms/android/project.properties
 ```
 
-- Remove pastas de cache locais do compilador
+- Remove pastas de cache locais do compilador:
 
 ```bash
 rm -rf /app/src-cordova/platforms/android/.gradle
@@ -363,7 +355,7 @@ rm -rf /app/src-cordova/platforms/android/app/build
 rm -rf /root/.gradle/caches
 ```
 
-- Execute o build
+- Execute o build:
 
 ```bash
 cd src-cordova
@@ -371,9 +363,11 @@ cordova build android --debug -- --no-daemon
 cd ..
 ```
 
-- O APK deve ser gerado em \app\src-cordova\platforms\android\app\build\outputs\apk\debug
+- O APK deve ser gerado em \app\src-cordova\platforms\android\app\build\outputs\apk\debug:
 
 ---
+
+# Sempre que alterar o código-fonte faça o Build com o comando do Quasar, caso contrário os binários que geram o APK não serão atualizados.
 
 # Use o comando do Quasar para o Build debug/ não assinado para instalar via celular:
 
@@ -387,7 +381,7 @@ quasar build -m cordova -T android --debug
 quasar build -m cordova -T android
 ```
 
-### Ou para compilar usando diretamente o Cordova:
+### Ou para compilar usando diretamente o Cordova (mas nesse caso, se teve alteração n código-fonte, não será compilado a nova versão, dai use o comando do Quasar):
 
 ```bash
 cd src-cordova
