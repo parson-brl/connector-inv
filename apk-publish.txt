@@ -1,0 +1,21 @@
+
+quasar build -m cordova -T android -t mat
+
+
+keytool -genkey -v -keystore connector-inv.keystore -alias inv -keyalg RSA -keysize 2048 -validity 20000
+
+jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore /Users/asantos/workspace/js/connector-inv/connector-inv.keystore /Users/asantos/workspace/js/connector-inv/src-cordova/platforms/android/app/build/outputs/apk/release/inv1.apk inv
+
+~/Library/Android/sdk/build-tools/23.0.3/zipalign -v 4 /Users/asantos/workspace/js/connector-inv/src-cordova/platforms/android/app/build/outputs/apk/release/inv1.apk /Users/asantos/workspace/js/connector-inv/src-cordova/platforms/android/app/build/outputs/apk/release/inv1-signed.apk
+
+
+123456
+
+jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore /Users/asantos/workspace/js/connector-inv/connector-inv.keystore /Users/asantos/workspace/js/connector-inv/src-cordova/platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk inv
+
+rm -rf /Users/asantos/workspace/js/connector-inv/src-cordova/platforms/android/app/build/outputs/apk/release/inv1.apk
+~/Library/Android/sdk/build-tools/23.0.3/zipalign -v 4 /Users/asantos/workspace/js/connector-inv/src-cordova/platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk /Users/asantos/workspace/js/connector-inv/src-cordova/platforms/android/app/build/outputs/apk/release/inv1.apk
+
+http://192.168.0.63/inv/inv1.apk
+http://192.168.0.63/inv/inv1-debug.apk
+http://192.168.0.63/inv/inv1-signed.apk
