@@ -1,0 +1,11 @@
+{
+  "android": {
+    "release": {
+      "keystore": "../connector-inv.keystore",
+      "storePassword": "123456",
+      "alias": "inv",
+      "password" : "123456",
+      "keystoreType": ""
+    }
+  }
+}

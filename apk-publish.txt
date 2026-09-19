@@ -1,15 +1,13 @@
-
+METODO usado pelo Alexandre:
 quasar build -m cordova -T android -t mat
 
-
 keytool -genkey -v -keystore connector-inv.keystore -alias inv -keyalg RSA -keysize 2048 -validity 20000
+
+Senha: 123456
 
 jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore /Users/asantos/workspace/js/connector-inv/connector-inv.keystore /Users/asantos/workspace/js/connector-inv/src-cordova/platforms/android/app/build/outputs/apk/release/inv1.apk inv
 
 ~/Library/Android/sdk/build-tools/23.0.3/zipalign -v 4 /Users/asantos/workspace/js/connector-inv/src-cordova/platforms/android/app/build/outputs/apk/release/inv1.apk /Users/asantos/workspace/js/connector-inv/src-cordova/platforms/android/app/build/outputs/apk/release/inv1-signed.apk
-
-
-123456
 
 jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore /Users/asantos/workspace/js/connector-inv/connector-inv.keystore /Users/asantos/workspace/js/connector-inv/src-cordova/platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk inv
 
@@ -19,3 +17,20 @@ rm -rf /Users/asantos/workspace/js/connector-inv/src-cordova/platforms/android/a
 http://192.168.0.63/inv/inv1.apk
 http://192.168.0.63/inv/inv1-debug.apk
 http://192.168.0.63/inv/inv1-signed.apk
+
+-----------------------------------------------------------------------------
+METODO com o Docker (não testado só documentei, oficialmente siga os passos do README.md):
+Pule o comando keytool (já que a chave já existe) e faça o seguinte dentro do contêiner:
+1. Gere o APK não assinado:
+quasar build -m cordova -T android
+cd src-cordova && cordova build android --release -- --no-daemon && cd ..
+
+2. Rode o jarsigner exatamente como ele colocou (garantindo que o arquivo .keystore esteja na raiz /app do Docker):
+jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore /app/barcode-inv.keystore /app/src-cordova/platforms/android/app/build/outputs/apk/release/app-release.apk inv
+(Ele vai pedir a senha, digite 123456)
+
+3. Atenção ao zipalign: 
+O comando dele tentava buscar o zipalign na máquina local dele (/Users/asantos...). 
+No seu contêiner Docker, essa ferramenta geralmente já está global no sistema operacional. 
+Você pode tentar rodar apenas:
+zipalign -v 4 /app/src-cordova/platforms/android/app/build/outputs/apk/release/app-release.apk /app/src-cordova/platforms/android/app/build/outputs/apk/release/inv1.apk

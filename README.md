@@ -50,6 +50,25 @@ docker build -t oxford-app-connector-inv .
 docker run -it --name oxford-app-connector-inv-rodando -p 8080:8080 -v "${PWD}:/app" oxford-app-connector-inv
 ```
 
+Caso você só tenha saido do container com o comando exit e quiser voltar de novo para o container de onde parou use os comandos:
+
+```bash
+# 1. Inicie o container existente
+docker start oxford-app-connector-inv-rodando
+
+# 2. Conecte o seu terminal de forma interativa dentro dele
+docker exec -it oxford-app-connector-inv-rodando sh
+```
+
+Obs: Caso vc tenha voltado ao container após todos os comandos da geração do APK Android abaixo, tem que dentro do container executar de novo os comandos:
+
+```bash
+apt-get update
+apt-get install -y openjdk-8-jdk
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+export PATH=$JAVA_HOME/bin:$PATH
+```
+
 ---
 
 ---
@@ -347,6 +366,26 @@ sed -i 's/cdvCompileSdkVersion=.*/cdvCompileSdkVersion=29/g' /app/src-cordova/pl
 sed -i 's/cdvBuildToolsVersion=.*/cdvBuildToolsVersion=29.0.2/g' /app/src-cordova/platforms/android/project.properties
 ```
 
+## AVISO: Bloqueio de Tráfego HTTP (Cleartext Traffic)
+
+Desde o Android 9 (API 28), o sistema proíbe tráfego em texto puro (sem criptografia), ou seja um app instalado não pode acessar API com HTTP, somente com HTTPS
+
+Para liberar o HTTP explicitamente no Android, você precisa alterar o manifesto do Android (AndroidManifest.xml)
+
+- Edite o arquivo:
+
+```bash
+nano /app/src-cordova/platforms/android/app//src/main/AndroidManifest.xml
+```
+
+- Procure pela tag <application> e adicione ao final (antes de >) o atributo
+
+```bash
+android:usesCleartextTraffic="true"
+```
+
+---
+
 - Remove pastas de cache locais do compilador:
 
 ```bash
@@ -364,6 +403,29 @@ cd ..
 ```
 
 - O APK deve ser gerado em \app\src-cordova\platforms\android\app\build\outputs\apk\debug:
+
+## Para enviar ao cliente gere o APK no modo release
+
+Siga os seguintes passos:
+
+- Certifique-se que o arquivo connector-inv.keystore exista na raiz do projeto (ele já esta versionado)
+
+- 1. Na raiz do projeto copie o arquivo build.json para o diretorio src-cordova, use o seguinte comando: (isso foi necessário pois o diretorio src-cordova nao é versionado no github, ele foi gerado no container docker com comandos anteriores acima)
+
+```bash
+cp /app/build.json /app/src-cordova/
+```
+
+- 2. Execute o build:
+
+```bash
+quasar build -m cordova -T android
+cd src-cordova
+cordova build android --release --device -- --no-daemon
+cd ..
+```
+
+O APK sera gerado em src-cordova\platforms\android\app\build\outputs\apk\release\app-release.apk
 
 ---
 
